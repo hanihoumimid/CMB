@@ -33,13 +33,51 @@
 
         .glass-nav { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); border-bottom: 2px solid #e2e8f0; }
         
-        .reveal { 
-            opacity: 0; 
-            transform: translateY(20px); 
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
+        /* --- ANIMATIONS AU CHARGEMENT (HERO) --- */
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes scaleReveal {
+            from { transform: scale(1.1); opacity: 0; filter: blur(5px); }
+            to { transform: scale(1); opacity: 1; filter: blur(0); }
+        }
+
+        .load-slide-down { animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .load-fade-up { opacity: 0; animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .load-scale { opacity: 0; animation: scaleReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        /* Delais pour l'effet cascade au chargement */
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+
+        /* --- ANIMATIONS AU SCROLL --- */
+        .reveal-up, .reveal-left, .reveal-right, .reveal-zoom {
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
         
+        .reveal-up { transform: translateY(40px); }
+        .reveal-left { transform: translateX(-40px); }
+        .reveal-right { transform: translateX(40px); }
+        .reveal-zoom { transform: scale(0.95); }
+
+        .reveal-up.active, .reveal-left.active, .reveal-right.active, .reveal-zoom.active {
+            opacity: 1;
+            transform: translate(0) scale(1);
+        }
+
+        /* Delais pour l'effet cascade au scroll */
+        .s-delay-100 { transition-delay: 100ms; }
+        .s-delay-200 { transition-delay: 200ms; }
+        .s-delay-300 { transition-delay: 300ms; }
+
         /* Grille adaptée */
         .dense-grid {
             display: grid;
@@ -48,9 +86,7 @@
         }
         @media (min-width: 768px) { .dense-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
-        .phone-hover {
-            transition: all 0.3s ease;
-        }
+        .phone-hover { transition: all 0.3s ease; }
         .phone-hover:hover {
             color: #c4a47c;
             transform: translateY(-2px);
@@ -60,7 +96,7 @@
 </head>
 <body class="text-slate-800 bg-white antialiased">
 
-    <header class="glass-nav sticky top-0 z-[50] w-full">
+    <header class="glass-nav sticky top-0 z-[50] w-full load-slide-down">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <a href="#" class="flex items-center gap-2 shrink-0">
                 <div class="bg-brand-navy text-brand-gold w-10 h-10 flex items-center justify-center rounded font-serif font-bold border border-brand-gold/30 shadow-md text-xl">MB</div>
@@ -100,17 +136,17 @@
 
     <section class="bg-brand-light py-16 lg:py-24 border-b-2 border-slate-100 overflow-hidden">
         <div class="container mx-auto px-4 grid lg:grid-cols-2 gap-10 items-center">
-            <div class="reveal active">
-                <div class="inline-block bg-brand-navy text-white text-[10px] font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-widest">
+            <div>
+                <div class="load-fade-up delay-1 inline-block bg-brand-navy text-white text-[10px] font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-widest">
                     Saint-Ouen-sur-Seine (93)
                 </div>
-                <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif text-brand-navy leading-tight mb-4 break-words">
+                <h1 class="load-fade-up delay-2 text-4xl md:text-6xl lg:text-7xl font-serif text-brand-navy leading-tight mb-4 break-words">
                     Une gestion <span class="text-brand-gold italic">humaine</span> et <span class="italic text-brand-gold font-normal">bienveillante.</span>
                 </h1>
-                <p class="text-slate-600 mb-8 leading-relaxed text-lg md:text-xl font-medium max-w-xl">
+                <p class="load-fade-up delay-3 text-slate-600 mb-8 leading-relaxed text-lg md:text-xl font-medium max-w-xl">
                     Plus qu'un expert-comptable, un véritable partenaire. Nous développons des compétences spécifiques pour les associations, les entreprises sociales (ESUS) et le secteur culturel.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4">
+                <div class="load-fade-up delay-4 flex flex-col sm:flex-row gap-4">
                     <a href="#contact" class="w-full sm:w-auto text-center px-8 py-4 bg-brand-navy text-white font-bold rounded shadow-xl hover:bg-brand-gold transition-all text-lg uppercase tracking-tight">
                         Prendre rendez-vous
                     </a>
@@ -119,15 +155,15 @@
                     </a>
                 </div>
             </div>
-            <div class="hidden lg:block reveal active delay-200">
+            <div class="hidden lg:block load-scale delay-2">
                 <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2022&auto=format&fit=crop" class="rounded-3xl shadow-2xl h-[500px] w-full object-cover border-4 border-white" alt="Cabinet Expertise">
             </div>
         </div>
     </section>
 
-    <section id="expertise" class="bg-white py-16 lg:py-20">
+    <section id="expertise" class="bg-white py-16 lg:py-20 overflow-hidden">
         <div class="container mx-auto px-4">
-            <div class="mb-10 reveal">
+            <div class="mb-10 reveal-up">
                 <h2 class="text-brand-gold font-bold uppercase tracking-widest text-xs mb-2">Notre Vocation</h2>
                 <h3 class="text-3xl md:text-5xl font-serif text-brand-navy mb-4 font-bold">
                     Partenaire de votre quotidien.
@@ -138,7 +174,7 @@
             </div>
 
             <div class="dense-grid">
-                <div class="reveal p-8 border border-slate-100 rounded-2xl bg-slate-50 hover:border-brand-gold transition-all group">
+                <div class="reveal-up p-8 border border-slate-100 rounded-2xl bg-slate-50 hover:border-brand-gold transition-all group">
                     <i class="fas fa-calculator text-3xl text-brand-gold mb-4"></i>
                     <h4 class="font-bold text-brand-navy text-xl mb-3 uppercase">Expertise Comptable</h4>
                     <p class="text-base text-slate-600 leading-relaxed">
@@ -146,7 +182,7 @@
                     </p>
                 </div>
 
-                <div class="reveal delay-100 p-8 border border-slate-100 rounded-2xl bg-brand-navy text-white hover:shadow-glow transition-all group relative overflow-hidden">
+                <div class="reveal-up s-delay-100 p-8 border border-slate-100 rounded-2xl bg-brand-navy text-white hover:shadow-glow transition-all group relative overflow-hidden">
                     <div class="absolute top-0 right-0 p-4 opacity-10 text-9xl font-serif text-brand-gold italic">MB</div>
                     <i class="fas fa-hands-helping text-3xl text-brand-gold mb-4 relative z-10"></i>
                     <h4 class="font-bold text-brand-gold text-xl mb-3 uppercase relative z-10">ESS & Culture</h4>
@@ -155,7 +191,7 @@
                     </p>
                 </div>
 
-                <div class="reveal delay-200 p-8 border border-slate-100 rounded-2xl bg-slate-50 hover:border-brand-gold transition-all group">
+                <div class="reveal-up s-delay-200 p-8 border border-slate-100 rounded-2xl bg-slate-50 hover:border-brand-gold transition-all group">
                     <i class="fas fa-users text-3xl text-brand-gold mb-4"></i>
                     <h4 class="font-bold text-brand-navy text-xl mb-3 uppercase">Gestion Sociale</h4>
                     <p class="text-base text-slate-600 leading-relaxed">
@@ -163,7 +199,7 @@
                     </p>
                 </div>
 
-                <div class="reveal delay-300 p-8 border border-slate-100 rounded-2xl bg-slate-50 hover:border-brand-gold transition-all group">
+                <div class="reveal-up s-delay-300 p-8 border border-slate-100 rounded-2xl bg-slate-50 hover:border-brand-gold transition-all group">
                     <i class="fas fa-shield-alt text-3xl text-brand-gold mb-4"></i>
                     <h4 class="font-bold text-brand-navy text-xl mb-3 uppercase">Audit & CAC</h4>
                     <p class="text-base text-slate-600 leading-relaxed">
@@ -177,7 +213,7 @@
     <section id="financement" class="bg-brand-navy text-white py-16 lg:py-20 overflow-hidden">
         <div class="container mx-auto px-4">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="reveal">
+                <div class="reveal-left">
                     <h2 class="text-brand-gold font-bold uppercase tracking-widest text-xs mb-4">Recherche de Financement</h2>
                     <h3 class="text-3xl md:text-5xl font-serif mb-8 leading-tight font-bold underline decoration-brand-gold decoration-4 underline-offset-8">
                         Stratégie & Levée de fonds.
@@ -211,7 +247,7 @@
                     </div>
                 </div>
                 
-                <div class="reveal delay-200 bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-md relative">
+                <div class="reveal-right s-delay-100 bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-md relative">
                     <i class="fas fa-hand-holding-usd text-6xl text-brand-gold absolute top-8 right-8 opacity-20"></i>
                     <h5 class="text-brand-gold font-bold text-sm uppercase mb-6 tracking-widest">Nos Missions</h5>
                     <ul class="space-y-3 text-sm md:text-base font-semibold text-slate-200">
@@ -227,15 +263,15 @@
         </div>
     </section>
 
-    <section id="juridique" class="bg-brand-light py-16 lg:py-20">
+    <section id="juridique" class="bg-brand-light py-16 lg:py-20 overflow-hidden">
         <div class="container mx-auto px-4">
-            <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+            <div class="text-center max-w-3xl mx-auto mb-12 reveal-up">
                 <h2 class="text-brand-gold font-bold uppercase tracking-widest text-xs mb-2">Juridique</h2>
                 <h3 class="text-3xl md:text-4xl font-serif text-brand-navy font-bold">Tout au long de la vie de l'entreprise</h3>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
-                <div class="reveal p-8 bg-white border-l-4 border-brand-navy shadow-sm rounded-r-xl">
+                <div class="reveal-left p-8 bg-white border-l-4 border-brand-navy shadow-sm rounded-r-xl">
                     <h4 class="text-xl font-bold text-brand-navy mb-4 flex items-center gap-2">
                         <i class="fas fa-balance-scale text-brand-gold"></i> Vie Juridique Courante
                     </h4>
@@ -247,7 +283,7 @@
                     </ul>
                 </div>
 
-                <div class="reveal delay-100 p-8 bg-brand-navy text-white shadow-xl rounded-xl border border-brand-gold/20">
+                <div class="reveal-right s-delay-100 p-8 bg-brand-navy text-white shadow-xl rounded-xl border border-brand-gold/20">
                     <h4 class="text-xl font-bold text-brand-gold mb-4 flex items-center gap-2">
                         <i class="fas fa-seedling"></i> Spécialités ESS & Agrément
                     </h4>
@@ -263,11 +299,11 @@
         </div>
     </section>
 
-    <section id="numerique" class="bg-white py-16 lg:py-20 border-t border-slate-100">
+    <section id="numerique" class="bg-white py-16 lg:py-20 border-t border-slate-100 overflow-hidden">
         <div class="container mx-auto px-4">
             <div class="grid lg:grid-cols-2 gap-12">
                 
-                <div class="reveal">
+                <div class="reveal-up">
                     <h3 class="text-2xl font-serif text-brand-navy font-bold mb-6">
                         <span class="border-b-4 border-brand-gold/30">Expertise Numérique</span>
                     </h3>
@@ -275,12 +311,12 @@
                         Le Cabinet vous encourage vers des pratiques numériques pour gagner du temps et de la fiabilité.
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-100 hover:shadow-md transition-shadow">
                             <i class="fas fa-cloud-upload-alt text-brand-navy text-xl mb-2"></i>
                             <h5 class="font-bold text-sm uppercase">Dématérialisation</h5>
                             <p class="text-xs text-slate-500 mt-1">Mise en place de pratiques zéro papier.</p>
                         </div>
-                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-100 hover:shadow-md transition-shadow">
                             <i class="fas fa-laptop text-brand-navy text-xl mb-2"></i>
                             <h5 class="font-bold text-sm uppercase">Logiciels</h5>
                             <p class="text-xs text-slate-500 mt-1">Pack Office, Outils collaboratifs, AG en ligne.</p>
@@ -288,7 +324,7 @@
                     </div>
                 </div>
 
-                <div class="reveal delay-100">
+                <div class="reveal-up s-delay-100">
                     <h3 class="text-2xl font-serif text-brand-navy font-bold mb-6">
                         <span class="border-b-4 border-brand-gold/30">Formation & Intelligence Collective</span>
                     </h3>
@@ -321,24 +357,24 @@
 
     <section id="contact" class="bg-slate-50 py-12 lg:py-16">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col lg:flex-row bg-brand-navy rounded-[2.5rem] shadow-2xl overflow-hidden border-4 border-brand-navy">
+            <div class="reveal-zoom flex flex-col lg:flex-row bg-brand-navy rounded-[2.5rem] shadow-2xl overflow-hidden border-4 border-brand-navy">
                 
                 <div class="lg:w-2/3 bg-white p-8 md:p-14 border-r border-slate-100">
                     <div class="grid md:grid-cols-2 gap-8 mb-12 pb-10 border-b border-slate-100">
-                        <div class="reveal">
+                        <div>
                             <h2 class="text-2xl font-serif font-bold text-brand-navy leading-none mb-2">Fabienne Mazigh</h2>
                             <p class="text-xs font-bold uppercase tracking-widest text-brand-gold mb-4 italic">
                                 Expert-Comptable • Commissaire aux comptes
                             </p>
                         </div>
-                        <div class="text-sm font-semibold space-y-2 text-slate-600 reveal delay-100">
+                        <div class="text-sm font-semibold space-y-2 text-slate-600">
                             <p class="flex items-center gap-3"><i class="fas fa-map-marker-alt text-brand-gold"></i> 29 rue Anselme, 93400 Saint-Ouen</p>
                             <a href="tel:0668784248" class="phone-hover flex items-center gap-3"><i class="fas fa-phone-alt text-brand-gold"></i> 06.68.78.42.48</a>
                             <p class="flex items-center gap-3"><i class="fas fa-envelope text-brand-gold"></i> fabienne.mazigh@cabinet-mb.com</p>
                         </div>
                     </div>
 
-                    <div class="reveal delay-200">
+                    <div>
                         <h3 class="text-3xl font-serif font-bold text-brand-navy mb-8 uppercase tracking-tighter italic">
                             Démarrons votre projet
                         </h3>
@@ -383,7 +419,7 @@
                 <div class="bg-brand-gold text-brand-navy w-9 h-9 flex items-center justify-center rounded font-serif font-bold text-lg border border-brand-gold/30">MB</div>
                 <span class="font-bold tracking-[0.2em] text-base">Mazigh Berthelot</span>
             </div>
-            <p class="mb-4 text-slate-400">© 2026 Cabinet Mazigh Berthelot | Expertise, Social & Culture</p>
+            <p class="mb-4 text-slate-400">© <span id="current-year"></span> Cabinet Mazigh Berthelot | Expertise, Social & Culture</p>
             <div class="flex justify-center gap-8">
                 <a href="#" class="hover:text-brand-gold transition underline underline-offset-4 decoration-2">Mentions légales</a>
                 <a href="#" class="hover:text-brand-gold transition underline underline-offset-4 decoration-2">Honoraires</a>
@@ -392,22 +428,20 @@
     </footer>
 
     <script>
+        // Gestion du menu mobile
         const toggle = document.getElementById('menu-toggle');
         const closeBtn = document.getElementById('menu-close');
         const menu = document.getElementById('mobile-menu');
         const mLinks = document.querySelectorAll('.m-link');
 
-        // Fonction pour ouvrir le menu
         toggle.addEventListener('click', () => {
             menu.classList.remove('invisible', 'translate-x-full');
             menu.classList.add('translate-x-0');
             document.body.style.overflow = 'hidden';
         });
 
-        // Fonction pour fermer le menu
         const closeAll = () => {
             menu.classList.add('translate-x-full');
-            // On attend la fin de la transition avant de rendre invisible
             setTimeout(() => {
                 menu.classList.add('invisible');
             }, 300);
@@ -417,13 +451,26 @@
         closeBtn.addEventListener('click', closeAll);
         mLinks.forEach(link => link.addEventListener('click', closeAll));
 
-        // Animation au scroll
+        // Copyright dynamique
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Observer pour les animations au scroll (variées)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -10% 0px', // Déclenche un peu avant que l'élément soit totalement visible
+            threshold: 0.1
+        };
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
             });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }, observerOptions);
+
+        // On cible toutes nos nouvelles classes d'animation
+        document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-zoom').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
